@@ -7,38 +7,13 @@
 
 import UIKit
 
-
-protocol PostListViewModelP: class {
-
-    //MARK: Outputs
-
-    var didSelectPost: ((Post) -> Void)? {get set}
-    
-    var didUpdatePosts: (() -> Void)? {get set}
-
-    var posts: [Post] {get}
-    
-    //MARK: Inputs
-
-    func ready()
-    
-    func didSelectRow(at indexPath: IndexPath)
-}
-
-
-class PostListViewModel: PostListViewModelP { 
+class PostListViewModel { 
          
     //MARK: - Outputs
     
     var didSelectPost: ((Post) -> Void)?
     
-    var didUpdatePosts: (() -> Void)?
-    
-    private(set) var posts: [Post] = [Post]() {
-        didSet {
-            didUpdatePosts?()
-        }
-    }
+    var posts = Box<[Post]>([])
     
     //MARK: - Inputs
     
@@ -48,13 +23,13 @@ class PostListViewModel: PostListViewModelP {
                 return
             }
             DispatchQueue.main.async { [weak self] in
-                self?.posts = posts
+                self?.posts.value = posts
             }
         }
     }
     
     func didSelectRow(at indexPath: IndexPath) {
-        didSelectPost?(posts[indexPath.row])
+        didSelectPost?(posts.value[indexPath.row])
     }
     
     //MARK: - Dependencies

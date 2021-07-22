@@ -24,7 +24,7 @@ class PostVC: UIViewController {
     
     @IBOutlet weak var commentsTableConstraint: NSLayoutConstraint!
 
-    var viewModel: PostViewModelP!
+    var viewModel: PostViewModel!
     
 
     //MARK: - View lifecycle
@@ -32,14 +32,16 @@ class PostVC: UIViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        setPost(viewModel.post)
+        if let post = viewModel.post.value {
+            setPost(post)
+        }
         
         commentsTableView.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: CommentCell.cellReuseId)
         
         commentsTableView.dataSource = self
         commentsTableView.delegate = self
         
-        setupViewModel()
+        bindViewModel()
         viewModel.ready()
     }
     
@@ -50,15 +52,19 @@ class PostVC: UIViewController {
     
     //MARK: - Setup
 
-    private func setupViewModel() {
+    private func bindViewModel() {
         
-        viewModel.didUpdatePost = { [weak self] post in
-            self?.setPost(post)
+        viewModel.post.bind { [weak self] post in
+            if let post = self?.viewModel.post.value {
+                self?.setPost(post)
+            }
         }
-        viewModel.didUpdateUser = { [weak self] user in
-            self?.postAuthorLabel.text = user.name
+        viewModel.user.bind { [weak self] user in
+            if let user = self?.viewModel.user.value {
+                self?.postAuthorLabel.text = user.name
+            }
         }
-        viewModel.didUpdateComments = { [weak self] comments in
+        viewModel.comments.bind { [weak self] comments in
             self?.commentsTableView.reloadData()
         }
     }
@@ -91,14 +97,14 @@ class PostVC: UIViewController {
 extension PostVC: UITableViewDelegate,UITableViewDataSource  {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.comments.count
+        return viewModel.comments.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell =
             self.commentsTableView.dequeueReusableCell(withIdentifier: CommentCell.cellReuseId, for: indexPath) as! CommentCell
         
-        cell.configure(with: viewModel.comments[indexPath.row])
+        cell.configure(with: viewModel.comments.value[indexPath.row])
         return cell
     }
 }

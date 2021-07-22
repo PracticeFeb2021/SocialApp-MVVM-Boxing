@@ -11,7 +11,7 @@ class PostListVC: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var viewModel: PostListViewModelP!
+    var viewModel: PostListViewModel!
     
     var netService: NetworkingService!
     
@@ -28,13 +28,13 @@ class PostListVC: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        setupViewModel()
+        bindViewModel()
         viewModel.ready()
     }
     
     //MARK: - Setup 
     
-    private func setupViewModel() {
+    private func bindViewModel() {
         
         viewModel.didSelectPost = { [weak self] selectedPost in
             guard let weakSelf = self else {
@@ -43,10 +43,10 @@ class PostListVC: UIViewController {
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyBoard.instantiateViewController(withIdentifier: "PostVC") as! PostVC
             vc.viewModel = PostViewModel(weakSelf.netService)
-            vc.viewModel.post = selectedPost
+            vc.viewModel.post.value = selectedPost
             weakSelf.navigationController?.pushViewController(vc, animated: true)
         }
-        viewModel.didUpdatePosts = { [weak self] in
+        viewModel.posts.bind { [weak self] _ in
             self?.tableView.reloadData()
         }
     }
@@ -62,17 +62,17 @@ extension PostListVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        return viewModel.posts.count
+        return viewModel.posts.value.count
     }
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard !viewModel.posts.isEmpty else {
+        guard !viewModel.posts.value.isEmpty else {
             return UITableViewCell()
         }
         let cell =
             self.tableView.dequeueReusableCell(withIdentifier: PostCell.cellReuseId, for: indexPath) as! PostCell
-        cell.configure(with: viewModel.posts[indexPath.row])
+        cell.configure(with: viewModel.posts.value[indexPath.row])
         return cell
     }
     

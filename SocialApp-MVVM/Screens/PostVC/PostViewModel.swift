@@ -8,50 +8,22 @@
 import UIKit
 
 
-protocol PostViewModelP: class {
-
-    //MARK: Outputs
-
-    var didUpdateUser: ((User) -> Void)? {get set}
-    var didUpdatePost: ((Post) -> Void)? {get set}
-    var didUpdateComments: (([Comment]) -> Void)? {get set}
-    
-    var post: Post! {get set}
-    var comments: [Comment] {get}
-    var user: User! {get}
-    
-    //MARK: Inputs
-    
-    func ready()
-}
-
-class PostViewModel: PostViewModelP {
+class PostViewModel {
     
     //MARK: - Outputs
     
-    var didUpdateUser: ((User) -> Void)?
-    var didUpdatePost: ((Post) -> Void)?
-    var didUpdateComments: (([Comment]) -> Void)?
+    var post: Box<Post?> = Box(nil)
     
-    var post: Post! {
-        didSet {
-            didUpdatePost?(post)
-        }
-    }
-    private(set) var comments: [Comment] = [Comment]() {
-        didSet {
-            didUpdateComments?(comments)
-        }
-    }
-    private(set) var user: User! {
-        didSet {
-            didUpdateUser?(user)
-        }
-    }
+    var comments = Box<[Comment]>([])
+   
+    var user: Box<User?> = Box(nil)
     
     //MARK: - Inputs
     
     func ready() {
+        guard let post = post.value else {
+            return
+        }
         loadUser(with: post.userId)
         loadComments(forPostWithID: post.id)
     }
@@ -74,7 +46,7 @@ class PostViewModel: PostViewModelP {
                 return
             }
             DispatchQueue.main.async { [weak self] in
-                self?.user = user
+                self?.user.value = user
             }
         }
     }
@@ -91,10 +63,9 @@ class PostViewModel: PostViewModelP {
             print("INFO: found \(commentsForPost.count) comments for this post")
             
             DispatchQueue.main.async { [weak self] in
-                self?.comments = commentsForPost
+                self?.comments.value = commentsForPost
             }
         }
     }
-    
 }
 

@@ -26,6 +26,7 @@
 		0CB0180A25D9666E0020A588 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB017F725D9666E0020A588 /* User.swift */; };
 		0CB0180B25D9666E0020A588 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB017F825D9666E0020A588 /* Post.swift */; };
 		0CB0180C25D9666E0020A588 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB017F925D9666E0020A588 /* Company.swift */; };
+		11E9B0DD26A94298005132A9 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E9B0DC26A94298005132A9 /* Box.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		0CB017F725D9666E0020A588 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		0CB017F825D9666E0020A588 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		0CB017F925D9666E0020A588 /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
+		11E9B0DC26A94298005132A9 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 				0CB017DE25D9666D0020A588 /* Screens */,
 				0CB017E625D9666D0020A588 /* Views */,
 				0CB017C925D966280020A588 /* AppDelegate.swift */,
+				11E9B0DC26A94298005132A9 /* Box.swift */,
 			);
 			path = "SocialApp-MVVM";
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 				0CB0180825D9666E0020A588 /* Address.swift in Sources */,
 				0CB0180225D9666E0020A588 /* PostCell.swift in Sources */,
 				0CB0180B25D9666E0020A588 /* Post.swift in Sources */,
+				11E9B0DD26A94298005132A9 /* Box.swift in Sources */,
 				0CB0180925D9666E0020A588 /* Comment.swift in Sources */,
 				0CB017FB25D9666E0020A588 /* PostVC.swift in Sources */,
 				0CB0180425D9666E0020A588 /* Endpoint.swift in Sources */,

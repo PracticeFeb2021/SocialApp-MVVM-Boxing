@@ -20,7 +20,7 @@ protocol NetworkingService {
 
 class NetworkManager: NetworkingService {
     
-    static let shared: NetworkManager = { .init() }()
+    static let shared = NetworkManager()
     
     
     func loadPosts(_ completion: @escaping ([Post]?) -> ()) {
